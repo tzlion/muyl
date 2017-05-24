@@ -1,0 +1,39 @@
+== WDBT MARKUP == v0.03 WIP
+
+Used for user input into text fields
+
+V simple
+
+    ::bold::
+
+    __italic__
+
+    * Bulleted list item
+    * Another bulleted list item
+
+    # Numbered list item
+    # Another numbered list item
+
+    Internal link: [[type shortname/item id|link text]] << COMING BACK
+
+    External link: [http://example.com Link text] OR just [http://example.com]
+
+    External image: {path/to/img.jpg Alt text} OR just {path/to/img.jpg} OR {path/to/img.jpg 420x69 Alt text} OR {path/to/img.jpg 420x69} (this is new!)
+
+    =L1 header=
+    ==L2 header==
+    ===L3 header===
+    ====L4 header====
+    =====L5 header=====
+    ======L6 header======
+
+    newline = newline
+    2x newline = new paragraph
+
+To just display any special character without its effect, precede it with a backslash
+eg \__not italic\__ would output "__not italic__" (and not "not italic" in italics)
+
+
+anything not mentioned is not supported yet
+
+- THE END -
