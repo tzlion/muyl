@@ -1,6 +1,6 @@
 <?php
 
-namespace TzLion\Markup;
+namespace TzLion\Muyl;
 
 if ( $_POST['text'] ) {
     echo Markup::toHtml($_POST['text'],true);
@@ -8,7 +8,7 @@ if ( $_POST['text'] ) {
 
 class Markup {
 
-    // from ver 0.03 WIP
+    // from ver 0.0.3 WIP
 
     public static $markupSpecialChars = array (
         ":", "_", "*", "#", "[", "]", "|", "=", "/", "x"
@@ -80,6 +80,8 @@ class Markup {
 
         // Clean up the output linebreak-wise
         // Maybe this should be optional too
+        // Maybe the whole thing should be configurable I mean yeah
+        // Either a config file or pass i n a config object or this is an obj you instantiate and set config methods on it
         $text = preg_replace("~\n~","",$text);
         $text = preg_replace("~(</p>|</[uo]l>|<[uo]l>|</li>)~","$1\n",$text);
 
@@ -96,5 +98,3 @@ class Markup {
     }
 
 }
-
-?>

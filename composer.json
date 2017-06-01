@@ -1,0 +1,22 @@
+{
+  "name": "tzlion/muyl",
+  "description": "DOES THE WORLD NEED ANOTHER TEXT FORMATTING MARKUP LANGUAGE probably not but I wanted one",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "taizou",
+      "homepage": "https://github.com/tzlion"
+    }
+  ],
+  "require": {
+    "php": ">=5.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "TzLion\\Muyl\\": "src/"
+    }
+  }
+}
