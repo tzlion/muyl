@@ -2,7 +2,7 @@
 
 namespace TzLion\Muyl;
 
-if ( $_POST['text'] ) {
+if ( isset($_POST['text']) ) {
     echo Markup::toHtml($_POST['text'],true);
 }
 
@@ -46,9 +46,9 @@ class Markup {
         $text = preg_replace("~^([^<].*[^>])$~um","<p>$1</p>",$text);
 
         // bold
-        $text = preg_replace("~::(.+?)::~su","<b>$1</b>",$text);
+        $text = preg_replace("~::(.+?)::~su","<strong>$1</strong>",$text);
         // italics
-        $text = preg_replace("~__(.+?)__~su","<i>$1</i>",$text);
+        $text = preg_replace("~__(.+?)__~su","<em>$1</em>",$text);
 
         // links (internal)
         preg_match_all("~\\[\\[(.*?)/(.*?)(\\|(.*?))?\\]\\]~",$text,$elmatches);
@@ -85,12 +85,13 @@ class Markup {
         $text = preg_replace("~\n~","",$text);
         $text = preg_replace("~(</p>|</[uo]l>|<[uo]l>|</li>)~","$1\n",$text);
 
-        return $text;
+        return trim($text);
 
     }
 
     private static function dummyUrlGenerate($thing1,$thing2,$thing3)
     {
+        $thing1 = 'internal';
         // This should become a callback later
         // Basically should test against the full internal link syntax because that should be more generic
         // in what the first part can contain

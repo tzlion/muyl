@@ -16,7 +16,8 @@
   },
   "autoload": {
     "psr-4": {
-      "TzLion\\Muyl\\": "src/"
+      "TzLion\\Muyl\\": "",
+      "TzLion\\Muyl\\Tests\\": "tests/"
     }
   }
 }
