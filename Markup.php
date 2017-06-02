@@ -6,6 +6,9 @@ if ( isset($_POST['text']) ) {
     echo Markup::toHtml($_POST['text'],true);
 }
 
+// todo: line breaks in list items
+//
+
 class Markup {
 
     // from ver 0.0.3 WIP

@@ -72,9 +72,20 @@ class MarkupTest extends \PHPUnit_Framework_TestCase
         $this->assertInputGivesResult('{img.jpg 420x69}', "<p><img src='img.jpg' style='width:420px;height:69px'/></p>");
     }
 
-    private function assertInputGivesResult($text, $expectedResult)
+    public function testHtmlSpecialCharsEscapedIfHtmlDisallowed()
     {
-        $result = Markup::toHtml($text);
+        $this->assertInputGivesResult('<a href="meow">meow</a>', "<p>&lt;a href=&quot;meow&quot;&gt;meow&lt;/a&gt;</p>");
+    }
+
+    public function testHtmlSpecialCharsNotEscapedIfHtmlAllowed()
+    {
+        $this->assertInputGivesResult('<a href="meow">meow</a>', '<a href="meow">meow</a>', true);
+        $this->assertInputGivesResult('cats <a href="meow">meow</a> cats', '<p>cats <a href="meow">meow</a> cats</p>', true);
+    }
+
+    private function assertInputGivesResult($text, $expectedResult, $htmlOn = false)
+    {
+        $result = Markup::toHtml($text, $htmlOn);
         $this->assertEquals($expectedResult, $result);
     }
 }
