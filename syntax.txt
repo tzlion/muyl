@@ -1,0 +1,48 @@
+== MUYL MARKUP SYNTAX as of v0.1.0 ==
+
+    ::bold::
+
+    __italic__
+
+    * Bulleted list item
+    * Another bulleted list item
+
+    # Numbered list item
+    # Another numbered list item
+
+    Internal links (configurable):
+        Automatic link text: [[some internal link signifier]]
+        Custom link text: [[some internal link signifier|link text]]
+
+    External links:
+        URL as link text: [http://example.com]
+        Custom link text: [http://example.com Link text]
+
+    External images:
+        Simple: {path/to/img.jpg}
+        With alt text: {path/to/img.jpg Alt text}
+        With size:
+            Width and height: {path/to/img.jpg 420x69}
+            Width only: {path/to/img.jpg 420x}
+            Height only: {path/to/img.jpg x69}
+        With size and alt text: {path/to/img.jpg 420x69 Alt text}
+
+    =L1 header=
+    ==L2 header==
+    ===L3 header===
+    ====L4 header====
+    =====L5 header=====
+    ======L6 header======
+
+    newline = newline
+    2x newline = new paragraph
+
+
+To just display any special character without its effect, precede it with a backslash
+eg \__not italic\__ would output "__not italic__" (and not "not italic" in italics)
+
+
+anything not mentioned is not supported yet
+
+
+- THE END -

@@ -2,14 +2,13 @@
 
 namespace TzLion\Muyl;
 
-if ( isset($_POST['text']) ) {
-    echo MarkupParser::toHtmlStatic($_POST['text'],true);
-}
-
-class MarkupParser {
-
-    // from ver 0.0.5 WIP
-
+/**
+ * Parser for markup syntax v0.1.0
+ * Note the syntax is theoretically versioned separately from this parser package
+ * But its major/minor versions at least should correspond
+ */
+class MarkupParser
+{
     /**
      * @var bool
      */
@@ -40,11 +39,10 @@ class MarkupParser {
         return self::toHtmlStatic($text, $this->allowHtml, $this->allowExternalLinks, $this->allowImages, $this->internalLinkCallback);
     }
 
-    public static $markupSpecialChars = array (
-        ":", "_", "*", "#", "[", "]", "|", "=", "/", "x"
-    );
+    public static $markupSpecialChars = [ ":", "_", "*", "#", "[", "]", "|", "=", "/", "x" ];
 
-    public static function toHtmlStatic( $text, $allowHtml = false, $allowExternalLinks = true, $allowImages = true, $internalLinkCallback = null ) {
+    public static function toHtmlStatic( $text, $allowHtml = false, $allowExternalLinks = true, $allowImages = true, $internalLinkCallback = null )
+    {
 
         if (!$allowHtml) {
             $text=htmlspecialchars($text);
@@ -110,7 +108,6 @@ class MarkupParser {
         }
 
         // Clean up the output linebreak-wise
-        // Maybe this should be optional too
         $text = preg_replace("~\n~","",$text);
         $text = preg_replace("~(</p>|</[uo]l>|<[uo]l>|</li>)~","$1\n",$text);
 
