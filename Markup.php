@@ -6,18 +6,15 @@ if ( isset($_POST['text']) ) {
     echo Markup::toHtml($_POST['text'],true);
 }
 
-// todo: line breaks in list items
-//
-
 class Markup {
 
-    // from ver 0.0.3 WIP
+    // from ver 0.0.5 WIP
 
     public static $markupSpecialChars = array (
         ":", "_", "*", "#", "[", "]", "|", "=", "/", "x"
     );
 
-    public static function toHtml( $text, $allowHtml = false, $allowExternalLinks = true, $allowImages = true ) {
+    public static function toHtml( $text, $allowHtml = false, $allowExternalLinks = true, $allowImages = true, $internalLinkCallback = null ) {
 
         if (!$allowHtml) {
             $text=htmlspecialchars($text);
@@ -53,17 +50,18 @@ class Markup {
         // italics
         $text = preg_replace("~__(.+?)__~su","<em>$1</em>",$text);
 
-        // links (internal)
-        preg_match_all("~\\[\\[(.*?)/(.*?)(\\|(.*?))?\\]\\]~",$text,$elmatches);
-        if ( $elmatches[0] ) {
-            for($x=0;$x<count($elmatches[0]);$x++) {
-                $fullmatch = $elmatches[0][$x];
-                $linkedtype = $elmatches[1][$x];
-                $linkeditem = $elmatches[2][$x];
-                $linktext = $elmatches[4][$x];
-                $url = self::dummyUrlGenerate(null,$linkedtype,$linkeditem);
-                if ( !$linktext ) $linktext=$linkedtype."/".$linkeditem; // todo; have this generate the templatised title
-                $text = str_replace($fullmatch,"<a href='$url'>$linktext</a>",$text);
+        if ( is_callable($internalLinkCallback) ) {
+            // links (internal)
+            preg_match_all("~\\[\\[(.*?)(\\|(.*?))?\\]\\]~",$text,$elmatches);
+            if ( $elmatches[0] ) {
+                for($x=0;$x<count($elmatches[0]);$x++) {
+                    $fullmatch = $elmatches[0][$x];
+                    $linkedthing = $elmatches[1][$x];
+                    $linktext = $elmatches[3][$x];
+                    list($url, $fallbackLinkText) = $internalLinkCallback($linkedthing);
+                    if ( !$linktext ) $linktext=$fallbackLinkText;
+                    $text = str_replace($fullmatch,"<a href='$url'>$linktext</a>",$text);
+                }
             }
         }
 
@@ -75,10 +73,11 @@ class Markup {
 
         if ( $allowImages ) {
             // images (external)
-            $text = preg_replace("~\\{([^ ]+?)}~u","<img src='$1'/>",$text); // without alt text
-            $text = preg_replace("~\\{([^ ]+?) ([0-9]*)x([0-9]*)\\}~u","<img src='$1' style='width:$2px;height:$3px'/>",$text); // with
-            $text = preg_replace("~\\{([^ ]+?) ([0-9]*)x([0-9]*) (.*?)\\}~u","<img src='$1' alt='$4' style='width:$2px;height:$3px'/>",$text); // with
-            $text = preg_replace("~\\{([^ ]+?) (.*?)\\}~u","<img src='$1' alt='$2'/>",$text); // with
+            $text = preg_replace("~\\{([^ ]+?)}~u","<img src='$1'/>",$text); // url only
+            $text = preg_replace("~\\{([^ ]+?) ([0-9]*)x([0-9]*)\\}~u","<img src='$1' style='width:$2px;height:$3px;'/>",$text); // with width/height
+            $text = preg_replace("~\\{([^ ]+?) ([0-9]*)x([0-9]*) (.*?)\\}~u","<img src='$1' alt='$4' style='width:$2px;height:$3px;'/>",$text); // with alt and width/height
+            $text = preg_replace("~\\{([^ ]+?) (.*?)\\}~u","<img src='$1' alt='$2'/>",$text); // with alt
+            $text = preg_replace("~(<img .+?)(width|height):px;(.+?>)~u","$1$3",$text); // clean up missing widths/heights
         }
 
         // Clean up the output linebreak-wise
@@ -90,15 +89,6 @@ class Markup {
 
         return trim($text);
 
-    }
-
-    private static function dummyUrlGenerate($thing1,$thing2,$thing3)
-    {
-        $thing1 = 'internal';
-        // This should become a callback later
-        // Basically should test against the full internal link syntax because that should be more generic
-        // in what the first part can contain
-        return "http://$thing1/$thing2/$thing3";
     }
 
 }

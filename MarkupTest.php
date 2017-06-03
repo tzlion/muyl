@@ -57,19 +57,23 @@ class MarkupTest extends \PHPUnit_Framework_TestCase
         $this->assertInputGivesResult('[http://lion.li lions world]', "<p><a href='http://lion.li'>lions world</a></p>");
     }
 
-    public function testInternalLinks()
+    public function testInternalLinksWithCallback()
     {
-        // this is a bit tbc
-        $this->assertInputGivesResult('[[type/69|link text]]', "<p><a href='http://internal/type/69'>link text</a></p>");
-        $this->assertInputGivesResult('[[type/69]]', "<p><a href='http://internal/type/69'>type/69</a></p>");
+        $callback = function ($linkedthing) { return ["url/$linkedthing", "linktext $linkedthing"]; };
+        $this->assertInputGivesResult('[[linko|link text]]', "<p><a href='url/linko'>link text</a></p>", false, $callback);
+        $this->assertInputGivesResult('[[linko]]', "<p><a href='url/linko'>linktext linko</a></p>", false, $callback);
     }
 
     public function testImages()
     {
         $this->assertInputGivesResult('{img.jpg Alt text}', "<p><img src='img.jpg' alt='Alt text'/></p>");
         $this->assertInputGivesResult('{img.jpg}', "<p><img src='img.jpg'/></p>");
-        $this->assertInputGivesResult('{img.jpg 420x69 Alt text}', "<p><img src='img.jpg' alt='Alt text' style='width:420px;height:69px'/></p>");
-        $this->assertInputGivesResult('{img.jpg 420x69}', "<p><img src='img.jpg' style='width:420px;height:69px'/></p>");
+        $this->assertInputGivesResult('{img.jpg 420x69 Alt text}', "<p><img src='img.jpg' alt='Alt text' style='width:420px;height:69px;'/></p>");
+        $this->assertInputGivesResult('{img.jpg 420x69}', "<p><img src='img.jpg' style='width:420px;height:69px;'/></p>");
+        $this->assertInputGivesResult('{img.jpg 420x}', "<p><img src='img.jpg' style='width:420px;'/></p>");
+        $this->assertInputGivesResult('{img.jpg x69}', "<p><img src='img.jpg' style='height:69px;'/></p>");
+        // test the empty width/height cleanup doesnt purge that from random text
+        $this->assertInputGivesResult('blah blah height:px; lol', "<p>blah blah height:px; lol</p>");
     }
 
     public function testHtmlSpecialCharsEscapedIfHtmlDisallowed()
@@ -83,9 +87,9 @@ class MarkupTest extends \PHPUnit_Framework_TestCase
         $this->assertInputGivesResult('cats <a href="meow">meow</a> cats', '<p>cats <a href="meow">meow</a> cats</p>', true);
     }
 
-    private function assertInputGivesResult($text, $expectedResult, $htmlOn = false)
+    private function assertInputGivesResult($text, $expectedResult, $htmlOn = false, $internalLinkCallback = null)
     {
-        $result = Markup::toHtml($text, $htmlOn);
+        $result = Markup::toHtml($text, $htmlOn, true, true, $internalLinkCallback);
         $this->assertEquals($expectedResult, $result);
     }
 }

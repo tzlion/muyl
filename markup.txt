@@ -1,4 +1,4 @@
-== MUYL MARKUP == v0.0.3 WIP
+== MUYL MARKUP == v0.0.5 WIP
 
 Used for user input into text fields
 
@@ -14,11 +14,22 @@ V simple
     # Numbered list item
     # Another numbered list item
 
-    Internal link: [[type shortname/item id|link text]] << COMING BACK
+    Internal links (configurable):
+        Automatic link text: [[some internal link signifier]]
+        Custom link text: [[some internal link signifier|link text]]
 
-    External link: [http://example.com Link text] OR just [http://example.com]
+    External links:
+        URL as link text: [http://example.com]
+        Custom link text: [http://example.com Link text]
 
-    External image: {path/to/img.jpg Alt text} OR just {path/to/img.jpg} OR {path/to/img.jpg 420x69 Alt text} OR {path/to/img.jpg 420x69} (this is new!)
+    External images:
+        Simple: {path/to/img.jpg}
+        With alt text: {path/to/img.jpg Alt text}
+        With size:
+            Width and height: {path/to/img.jpg 420x69}
+            Width only: {path/to/img.jpg 420x}
+            Height only: {path/to/img.jpg x69}
+        With size and alt text: {path/to/img.jpg 420x69 Alt text}
 
     =L1 header=
     ==L2 header==
