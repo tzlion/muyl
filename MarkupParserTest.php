@@ -4,7 +4,7 @@ namespace TzLion\Muyl;
 
 require_once('vendor/autoload.php');
 
-class MarkupTest extends \PHPUnit_Framework_TestCase
+class MarkupParserTest extends \PHPUnit_Framework_TestCase
 {
     public function testBold()
     {
@@ -89,7 +89,8 @@ class MarkupTest extends \PHPUnit_Framework_TestCase
 
     private function assertInputGivesResult($text, $expectedResult, $htmlOn = false, $internalLinkCallback = null)
     {
-        $result = Markup::toHtml($text, $htmlOn, true, true, $internalLinkCallback);
+        $parser = new MarkupParser($htmlOn, true, true, $internalLinkCallback);
+        $result = $parser->toHtml($text);
         $this->assertEquals($expectedResult, $result);
     }
 }

@@ -3,18 +3,48 @@
 namespace TzLion\Muyl;
 
 if ( isset($_POST['text']) ) {
-    echo Markup::toHtml($_POST['text'],true);
+    echo MarkupParser::toHtmlStatic($_POST['text'],true);
 }
 
-class Markup {
+class MarkupParser {
 
     // from ver 0.0.5 WIP
+
+    /**
+     * @var bool
+     */
+    private $allowHtml;
+    /**
+     * @var bool
+     */
+    private $allowExternalLinks;
+    /**
+     * @var bool
+     */
+    private $allowImages;
+    /**
+     * @var callable|null
+     */
+    private $internalLinkCallback;
+
+    public function __construct($allowHtml = false, $allowExternalLinks = true, $allowImages = true, $internalLinkCallback = null)
+    {
+        $this->allowHtml = $allowHtml;
+        $this->allowExternalLinks = $allowExternalLinks;
+        $this->allowImages = $allowImages;
+        $this->internalLinkCallback = $internalLinkCallback;
+    }
+
+    public function toHtml($text)
+    {
+        return self::toHtmlStatic($text, $this->allowHtml, $this->allowExternalLinks, $this->allowImages, $this->internalLinkCallback);
+    }
 
     public static $markupSpecialChars = array (
         ":", "_", "*", "#", "[", "]", "|", "=", "/", "x"
     );
 
-    public static function toHtml( $text, $allowHtml = false, $allowExternalLinks = true, $allowImages = true, $internalLinkCallback = null ) {
+    public static function toHtmlStatic( $text, $allowHtml = false, $allowExternalLinks = true, $allowImages = true, $internalLinkCallback = null ) {
 
         if (!$allowHtml) {
             $text=htmlspecialchars($text);
@@ -23,7 +53,6 @@ class Markup {
         foreach( self::$markupSpecialChars as $char ) {
             $text = str_replace( '\\' . $char, "&#" . ord( $char ) . ";", $text );
         }
-
 
         // standardise newline characters
         $text=preg_replace("~(\r\n|\r)~u","\n",$text);
@@ -82,8 +111,6 @@ class Markup {
 
         // Clean up the output linebreak-wise
         // Maybe this should be optional too
-        // Maybe the whole thing should be configurable I mean yeah
-        // Either a config file or pass i n a config object or this is an obj you instantiate and set config methods on it
         $text = preg_replace("~\n~","",$text);
         $text = preg_replace("~(</p>|</[uo]l>|<[uo]l>|</li>)~","$1\n",$text);
 
