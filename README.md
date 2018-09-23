@@ -4,7 +4,7 @@ A parser for MUYL, a probably unnecessary markup language for text formatting wh
 
 The MUYL language itself and this parser are versioned separately, but since this parser is currently the only implementation and documentation of the language, at least the major and minor versions will probably match up.
 
-Currently the language is at version **0.1.0**.
+Currently the language is at version **0.1.1**.
 
 ## Usage
 

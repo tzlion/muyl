@@ -1,4 +1,4 @@
-== MUYL MARKUP SYNTAX as of v0.1.0 ==
+== MUYL MARKUP SYNTAX as of v0.1.1 ==
 
     ::bold::
 
@@ -6,6 +6,7 @@
 
     * Bulleted list item
     * Another bulleted list item
+      Line break inside list item
 
     # Numbered list item
     # Another numbered list item

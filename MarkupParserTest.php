@@ -41,6 +41,11 @@ class MarkupParserTest extends \PHPUnit_Framework_TestCase
         $this->assertInputGivesResult("*meow\n purr\n*woof", "<ul>\n<li>meow<br/>purr</li>\n<li>woof</li>\n</ul>");
     }
 
+    public function testMultipleLineBreaksInList()
+    {
+        $this->assertInputGivesResult("*meow\n purr\n purr\n purr\n*woof", "<ul>\n<li>meow<br/>purr<br/>purr<br/>purr</li>\n<li>woof</li>\n</ul>");
+    }
+
     public function testHeaders()
     {
         $this->assertInputGivesResult("=fart=", "<h1>fart</h1>");

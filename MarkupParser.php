@@ -3,7 +3,7 @@
 namespace TzLion\Muyl;
 
 /**
- * Parser for markup syntax v0.1.0
+ * Parser for markup syntax v0.1.1
  * Note the syntax is theoretically versioned separately from this parser package
  * But its major/minor versions at least should correspond
  */
@@ -58,8 +58,12 @@ class MarkupParser
         // lists
         $text = preg_replace("~^\\*(.*)?$~um","<uli>$1</uli>",$text); // uli = fake tag to distinguish unordered list items
         $text = preg_replace("~^#(.*)?$~um","<oli>$1</oli>",$text); // oli = fake tag to distinguish ordered list items
-        $text = preg_replace("~</uli>\n (.+)$~um","<br/>$1</uli>",$text); // deal with linebreaks inside list items
-        $text = preg_replace("~</oli>\n (.+)$~um","<br/>$1</oli>",$text);
+        while(preg_match("~</uli>\n (.+)$~um", $text)) {
+            $text = preg_replace("~</uli>\n (.+)$~um","<br/>$1</uli>",$text); // deal with linebreaks inside list items
+        }
+        while(preg_match("~</oli>\n (.+)$~um", $text)) {
+            $text = preg_replace("~</oli>\n (.+)$~um","<br/>$1</oli>",$text);
+        }
         $text = str_replace("</uli>\n<uli>","</uli><uli>",$text); // strip linebreaks between consecutive tags
         $text = str_replace("</oli>\n<oli>","</oli><oli>",$text);
         $text = preg_replace("~^<(o|u)li>~um","<$1l><$1li>",$text); // opening ol/ul tags
