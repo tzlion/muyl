@@ -1,6 +1,6 @@
 {
   "name": "tzlion/muyl",
-  "description": "DOES THE WORLD NEED ANOTHER TEXT FORMATTING MARKUP LANGUAGE probably not but I wanted one",
+  "description": "parser for MUYL text formatting markup language",
   "license": "MIT",
   "authors": [
     {
