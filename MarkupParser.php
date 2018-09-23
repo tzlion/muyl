@@ -109,7 +109,7 @@ class MarkupParser
 
         // Clean up the output linebreak-wise
         $text = preg_replace("~\n~","",$text);
-        $text = preg_replace("~(</p>|</[uo]l>|<[uo]l>|</li>)~","$1\n",$text);
+        $text = preg_replace("~(</h[1-6]>|</p>|</[uo]l>|<[uo]l>|</li>)~","$1\n",$text);
 
         return trim($text);
 
