@@ -42,9 +42,15 @@ Syntax can be found in syntax.txt
 
 ## To do 
 
-* Better handling of lists! Nested lists and line breaks within list items.
+* Nested lists
 * Better config possibly allowing for any feature to be enabled/disabled
 
 ## Irony
 
 Yes I am aware of the irony of this readme file for a markup language parser being written in a different markup language to the language parsed by the parser thank you
+
+## Language version history
+
+v0.1.1 - adds the ability to insert line breaks in list items
+
+v0.1.0 - first public release
