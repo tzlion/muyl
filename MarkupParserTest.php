@@ -87,6 +87,19 @@ class MarkupParserTest extends \PHPUnit_Framework_TestCase
         $this->assertInputGivesResult('cats <a href="meow">meow</a> cats', '<p>cats <a href="meow">meow</a> cats</p>', true);
     }
 
+    public function testABunchOfStuffCombined()
+    {
+        $input = "=A title=\n__Italic and ::bold::__\n"
+            . "*List item 1\n*List ::item:: 2\n"
+            . "#List item 1\n#List ::item:: 2\n"
+            . "[http://example.com {img.bum} __meow meow__]";
+        $expectedResult = "<h1>A title</h1>\n<p><em>Italic and <strong>bold</strong></em></p>\n"
+            . "<ul>\n<li>List item 1</li>\n<li>List <strong>item</strong> 2</li>\n</ul>\n"
+            . "<ol>\n<li>List item 1</li>\n<li>List <strong>item</strong> 2</li>\n</ol>\n"
+            . "<p><a href='http://example.com'><img src='img.bum'/> <em>meow meow</em></a></p>";
+        $this->assertInputGivesResult($input, $expectedResult);
+    }
+
     private function assertInputGivesResult($text, $expectedResult, $htmlOn = false, $internalLinkCallback = null)
     {
         $parser = new MarkupParser($htmlOn, true, true, $internalLinkCallback);
