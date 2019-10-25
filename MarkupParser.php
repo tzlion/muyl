@@ -66,8 +66,10 @@ class MarkupParser
         }
         $text = str_replace("</uli>\n<uli>","</uli><uli>",$text); // strip linebreaks between consecutive tags
         $text = str_replace("</oli>\n<oli>","</oli><oli>",$text);
-        $text = preg_replace("~^<(o|u)li>~um","<$1l><$1li>",$text); // opening ol/ul tags
-        $text = preg_replace("~</(o|u)li>$~um","</$1li></$1l>",$text); // closing ol/ul tags
+        $text = preg_replace("~^<(o|u)li>~um","<$1l>\n<$1li>",$text); // opening ol/ul tags
+        $text = preg_replace("~</(o|u)li>$~um","</$1li>\n</$1l>",$text); // closing ol/ul tags
+        $text = str_replace("</uli><uli>","</uli>\n<uli>",$text); // put linebreaks BACK between consecutive tags
+        $text = str_replace("</oli><oli>","</oli>\n<oli>",$text);
         $text = preg_replace("~<(/?)[ou]li>~u","<$1li>",$text); // replace oli/uli w/proper li tags
 
         // Headers oh snap
@@ -119,8 +121,7 @@ class MarkupParser
         }
 
         // Clean up the output linebreak-wise
-        $text = preg_replace("~\n~","",$text);
-        $text = preg_replace("~(</h[1-6]>|</p>|</[uo]l>|<[uo]l>|</li>)~","$1\n",$text);
+        $text = preg_replace("~\n+~","\n",$text);
 
         return trim($text);
 
