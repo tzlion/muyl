@@ -76,7 +76,12 @@ class MarkupParser
 
         // ok NOW lets sort out linebreaks..essentially we wanna apply them to every line that doesnt start & end with tags at this point
         $text = preg_replace("~([^>\n])\n([^<\n])~u","$1<br/>$2",$text); // a BR is a line break surrounded by non-tags and non-newlines
-        $text = preg_replace("~^([^<].*[^>])$~um","<p>$1</p>",$text);
+
+        $lines = explode("\n", $text);
+        foreach($lines as &$line) {
+            $line = preg_replace("~^([^<].*[^>])$~u","<p>$1</p>", $line);
+        }
+        $text = implode("\n", $lines);
 
         // bold
         $text = preg_replace("~::(.+?)::~su","<strong>$1</strong>",$text);
