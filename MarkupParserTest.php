@@ -124,6 +124,13 @@ class MarkupParserTest extends \PHPUnit_Framework_TestCase
         $this->assertInputGivesResult($input, $expectedResult, true);
     }
 
+    public function testBigTestDocumentGivesExpectedResult()
+    {
+        $input = file_get_contents("testdata/testpost-src.muyl");
+        $expectedResult = file_get_contents("testdata/testpost-dest.html");
+        $this->assertInputGivesResult($input, $expectedResult, true);
+    }
+
     private function assertInputGivesResult($text, $expectedResult, $htmlOn = false, $internalLinkCallback = null)
     {
         $parser = new MarkupParser($htmlOn, true, true, $internalLinkCallback);
