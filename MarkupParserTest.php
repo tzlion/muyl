@@ -110,6 +110,27 @@ class MarkupParserTest extends \PHPUnit_Framework_TestCase
         $this->assertInputGivesResult($input, $expectedResult);
     }
 
+    public function testMultiParagraphBreaksInGeneralWorkAsExpected()
+    {
+        $input = "line1\n\nline2\nline2.5\n\nline3\n\nline4";
+        $expectedResult = "<p>line1</p>\n<p>line2<br/>line2.5</p>\n<p>line3</p>\n<p>line4</p>";
+        $this->assertInputGivesResult($input, $expectedResult, true);
+    }
+
+    public function testHeadersSurroundedByBlankLinesDontGetParagraphTagsWrappedAroundThem()
+    {
+        $input = "line1\n\n===header3===\n\nline2";
+        $expectedResult = "<p>line1</p>\n<h3>header3</h3>\n<p>line2</p>";
+        $this->assertInputGivesResult($input, $expectedResult, true);
+    }
+
+    public function testBigTestDocumentGivesExpectedResult()
+    {
+        $input = file_get_contents("testdata/testpost-src.muyl");
+        $expectedResult = file_get_contents("testdata/testpost-dest.html");
+        $this->assertInputGivesResult($input, $expectedResult, true);
+    }
+
     private function assertInputGivesResult($text, $expectedResult, $htmlOn = false, $internalLinkCallback = null)
     {
         $parser = new MarkupParser($htmlOn, true, true, $internalLinkCallback);
